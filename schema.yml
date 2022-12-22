@@ -1,0 +1,1778 @@
+openapi: 3.0.3
+info:
+  title: connectBooks
+  version: 1.0.0
+  description: Your project description
+paths:
+  /api/book/:
+    get:
+      operationId: book_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - book
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBookPostList'
+          description: ''
+    post:
+      operationId: book_create
+      tags:
+      - book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookPost'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BookPost'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BookPost'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookPost'
+          description: ''
+  /api/book/{id}/:
+    get:
+      operationId: book_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this book.
+        required: true
+      tags:
+      - book
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookGetUpdate'
+          description: ''
+    put:
+      operationId: book_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this book.
+        required: true
+      tags:
+      - book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookGetUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BookGetUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BookGetUpdate'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookGetUpdate'
+          description: ''
+    patch:
+      operationId: book_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this book.
+        required: true
+      tags:
+      - book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBookGetUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBookGetUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBookGetUpdate'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookGetUpdate'
+          description: ''
+    delete:
+      operationId: book_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this book.
+        required: true
+      tags:
+      - book
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/book/{id}/soft:
+    put:
+      operationId: book_soft_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this book.
+        required: true
+      tags:
+      - book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookDelete'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BookDelete'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BookDelete'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookDelete'
+          description: ''
+    patch:
+      operationId: book_soft_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this book.
+        required: true
+      tags:
+      - book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBookDelete'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBookDelete'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBookDelete'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookDelete'
+          description: ''
+  /api/borrowed/:
+    get:
+      operationId: borrowed_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - borrowed
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBorrowedsSerializersList'
+          description: ''
+  /api/borrowed/{id}/:
+    get:
+      operationId: borrowed_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this borrowed.
+        required: true
+      tags:
+      - borrowed
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BorrowedsSerializers'
+          description: ''
+  /api/borrowed/{id}/book/:
+    post:
+      operationId: borrowed_book_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this borrowed.
+        required: true
+      tags:
+      - borrowed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BorrowedsSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BorrowedsSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BorrowedsSerializers'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BorrowedsSerializers'
+          description: ''
+  /api/borrowed/{id}/devolution/:
+    put:
+      operationId: borrowed_devolution_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this borrowed.
+        required: true
+      tags:
+      - borrowed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BorrowedsSerializersDevolution'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BorrowedsSerializersDevolution'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BorrowedsSerializersDevolution'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BorrowedsSerializersDevolution'
+          description: ''
+    patch:
+      operationId: borrowed_devolution_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this borrowed.
+        required: true
+      tags:
+      - borrowed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBorrowedsSerializersDevolution'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBorrowedsSerializersDevolution'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBorrowedsSerializersDevolution'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BorrowedsSerializersDevolution'
+          description: ''
+  /api/feedback/:
+    get:
+      operationId: feedback_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - feedback
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGetOrUpdateFeedBackSerializersList'
+          description: ''
+  /api/feedback/{book_id}/book/:
+    get:
+      operationId: feedback_book_retrieve
+      parameters:
+      - in: path
+        name: book_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - feedback
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrUpdateFeedBackSerializers'
+          description: ''
+  /api/feedback/{borrowed_id}/borrowed/:
+    post:
+      operationId: feedback_borrowed_create
+      parameters:
+      - in: path
+        name: borrowed_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - feedback
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostFeedBackRenterSerializers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PostFeedBackRenterSerializers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PostFeedBackRenterSerializers'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostFeedBackRenterSerializers'
+          description: ''
+  /api/feedback/{id}/:
+    get:
+      operationId: feedback_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this feed back.
+        required: true
+      tags:
+      - feedback
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrUpdateFeedBackSerializers'
+          description: ''
+  /api/feedback/{user_id}/user/:
+    get:
+      operationId: feedback_user_retrieve
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - feedback
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrUpdateFeedBackSerializers'
+          description: ''
+  /api/login/:
+    post:
+      operationId: login_create
+      tags:
+      - login
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+  /api/users/:
+    get:
+      operationId: users_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserPostList'
+          description: ''
+    post:
+      operationId: users_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPost'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserPost'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserPost'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPost'
+          description: ''
+  /api/users/{id}/:
+    put:
+      operationId: users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPatch'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserPatch'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserPatch'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPatch'
+          description: ''
+    patch:
+      operationId: users_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserPatch'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserPatch'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserPatch'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPatch'
+          description: ''
+  /api/users/{id}/soft:
+    put:
+      operationId: users_soft_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDelete'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserDelete'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserDelete'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDelete'
+          description: ''
+    patch:
+      operationId: users_soft_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this user.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDelete'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDelete'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDelete'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDelete'
+          description: ''
+  /api/users/address/{id}/:
+    get:
+      operationId: users_address_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this address.
+        required: true
+      tags:
+      - users
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDetail'
+          description: ''
+    put:
+      operationId: users_address_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this address.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AddressDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AddressDetail'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDetail'
+          description: ''
+    patch:
+      operationId: users_address_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this address.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAddressDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAddressDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAddressDetail'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDetail'
+          description: ''
+  /payment/{id}/:
+    post:
+      operationId: payment_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - payment
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        state:
+          $ref: '#/components/schemas/StateEnum'
+        city:
+          type: string
+          maxLength: 100
+        district:
+          type: string
+          maxLength: 100
+        place:
+          type: string
+          maxLength: 100
+        number:
+          type: string
+          maxLength: 100
+        zip_code:
+          type: string
+          maxLength: 8
+        additional_data:
+          type: string
+          nullable: true
+        user:
+          type: string
+          format: uuid
+      required:
+      - city
+      - district
+      - id
+      - number
+      - place
+      - zip_code
+    AddressDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        state:
+          $ref: '#/components/schemas/StateEnum'
+        city:
+          type: string
+          maxLength: 100
+        district:
+          type: string
+          maxLength: 100
+        place:
+          type: string
+          maxLength: 100
+        number:
+          type: string
+          maxLength: 100
+        zip_code:
+          type: string
+          maxLength: 8
+        additional_data:
+          type: string
+          nullable: true
+      required:
+      - city
+      - district
+      - id
+      - number
+      - place
+      - zip_code
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - password
+      - token
+      - username
+    BookDelete:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        transaction:
+          allOf:
+          - $ref: '#/components/schemas/TransactionEnum'
+          readOnly: true
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+          readOnly: true
+        available:
+          type: boolean
+          readOnly: true
+        author:
+          type: string
+          readOnly: true
+        year:
+          type: string
+          readOnly: true
+        language:
+          allOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          readOnly: true
+        publishing:
+          type: string
+          readOnly: true
+        condition:
+          type: integer
+          readOnly: true
+        isbn:
+          type: string
+          readOnly: true
+        isActive:
+          type: boolean
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        genders:
+          type: array
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+      required:
+      - author
+      - available
+      - condition
+      - genders
+      - id
+      - isActive
+      - isbn
+      - language
+      - price
+      - publishing
+      - title
+      - transaction
+      - user
+      - year
+    BookGetUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+        transaction:
+          $ref: '#/components/schemas/TransactionEnum'
+        available:
+          type: boolean
+        author:
+          type: string
+          maxLength: 100
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        publishing:
+          type: string
+          maxLength: 254
+        condition:
+          type: integer
+          maximum: 10
+          minimum: 0
+        isbn:
+          type: string
+          maxLength: 13
+        extra_data:
+          type: string
+          format: uuid
+          readOnly: true
+        genders:
+          type: array
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+      required:
+      - author
+      - condition
+      - extra_data
+      - genders
+      - id
+      - isbn
+      - price
+      - publishing
+      - title
+    BookPost:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+        transaction:
+          $ref: '#/components/schemas/TransactionEnum'
+        available:
+          type: boolean
+        author:
+          type: string
+          maxLength: 100
+        year:
+          type: string
+          maxLength: 4
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        publishing:
+          type: string
+          maxLength: 254
+        condition:
+          type: integer
+          maximum: 10
+          minimum: 0
+        isbn:
+          type: string
+          maxLength: 13
+        genders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Gender'
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        extra_data:
+          allOf:
+          - $ref: '#/components/schemas/Extra_Data'
+          readOnly: true
+      required:
+      - author
+      - condition
+      - extra_data
+      - genders
+      - id
+      - isbn
+      - price
+      - publishing
+      - title
+      - user
+      - year
+    BorrowedsSerializers:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        initial_date:
+          type: string
+          format: date
+          readOnly: true
+        finish_date:
+          type: string
+          format: date
+          nullable: true
+        shipping_method:
+          $ref: '#/components/schemas/ShippingMethodEnum'
+        user_id:
+          type: string
+          format: uuid
+          readOnly: true
+        book_id:
+          type: string
+          format: uuid
+          readOnly: true
+        total_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+          nullable: true
+      required:
+      - book_id
+      - id
+      - initial_date
+      - shipping_method
+      - user_id
+    BorrowedsSerializersDevolution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user_id:
+          type: string
+          format: uuid
+          readOnly: true
+        book_id:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - book_id
+      - id
+      - user_id
+    Extra_Data:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        additional_data:
+          type: string
+          nullable: true
+        translater:
+          type: string
+          nullable: true
+          maxLength: 100
+        translated:
+          type: boolean
+        book:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - book
+      - id
+    Gender:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        genders:
+          $ref: '#/components/schemas/GendersEnum'
+      required:
+      - id
+    GendersEnum:
+      enum:
+      - Action
+      - Animation
+      - Comedy
+      - Horror
+      - NONE
+      type: string
+    GetOrUpdateFeedBackSerializers:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        borrowed:
+          allOf:
+          - $ref: '#/components/schemas/BorrowedsSerializers'
+          readOnly: true
+        stars_owner:
+          type: integer
+          maximum: 5
+          minimum: 0
+          nullable: true
+        stars_renter:
+          type: integer
+          maximum: 5
+          minimum: 0
+          nullable: true
+        rating_owner:
+          type: string
+          nullable: true
+        rating_renter:
+          type: string
+          nullable: true
+      required:
+      - borrowed
+      - id
+    LanguageEnum:
+      enum:
+      - Portuguese
+      - English
+      type: string
+    PaginatedBookPostList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookPost'
+    PaginatedBorrowedsSerializersList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BorrowedsSerializers'
+    PaginatedGetOrUpdateFeedBackSerializersList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetOrUpdateFeedBackSerializers'
+    PaginatedUserPostList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserPost'
+    PatchedAddressDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        state:
+          $ref: '#/components/schemas/StateEnum'
+        city:
+          type: string
+          maxLength: 100
+        district:
+          type: string
+          maxLength: 100
+        place:
+          type: string
+          maxLength: 100
+        number:
+          type: string
+          maxLength: 100
+        zip_code:
+          type: string
+          maxLength: 8
+        additional_data:
+          type: string
+          nullable: true
+    PatchedBookDelete:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        transaction:
+          allOf:
+          - $ref: '#/components/schemas/TransactionEnum'
+          readOnly: true
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+          readOnly: true
+        available:
+          type: boolean
+          readOnly: true
+        author:
+          type: string
+          readOnly: true
+        year:
+          type: string
+          readOnly: true
+        language:
+          allOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          readOnly: true
+        publishing:
+          type: string
+          readOnly: true
+        condition:
+          type: integer
+          readOnly: true
+        isbn:
+          type: string
+          readOnly: true
+        isActive:
+          type: boolean
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        genders:
+          type: array
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+    PatchedBookGetUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+        transaction:
+          $ref: '#/components/schemas/TransactionEnum'
+        available:
+          type: boolean
+        author:
+          type: string
+          maxLength: 100
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,4}(?:\.\d{0,2})?$
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        publishing:
+          type: string
+          maxLength: 254
+        condition:
+          type: integer
+          maximum: 10
+          minimum: 0
+        isbn:
+          type: string
+          maxLength: 13
+        extra_data:
+          type: string
+          format: uuid
+          readOnly: true
+        genders:
+          type: array
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+    PatchedBorrowedsSerializersDevolution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user_id:
+          type: string
+          format: uuid
+          readOnly: true
+        book_id:
+          type: string
+          format: uuid
+          readOnly: true
+    PatchedUserDelete:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        password:
+          type: string
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly
+            assigning them.
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        avatar:
+          type: string
+          readOnly: true
+          nullable: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        birth:
+          type: string
+          format: date
+          readOnly: true
+        stars:
+          type: integer
+          readOnly: true
+        groups:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+          description: The groups this user belongs to. A user will get all permissions
+            granted to each of their groups.
+        user_permissions:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+          description: Specific permissions for this user.
+    PatchedUserPatch:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        is_staff:
+          type: boolean
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        date_joined:
+          type: string
+          format: date-time
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        birth:
+          type: string
+          format: date
+        stars:
+          type: integer
+          readOnly: true
+    PostFeedBackRenterSerializers:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        borrowed:
+          allOf:
+          - $ref: '#/components/schemas/BorrowedsSerializers'
+          readOnly: true
+        stars_owner:
+          type: integer
+          readOnly: true
+          nullable: true
+        rating_owner:
+          type: string
+          readOnly: true
+          nullable: true
+        stars_renter:
+          type: integer
+          minimum: 0
+          maximum: 5
+        rating_renter:
+          type: string
+      required:
+      - borrowed
+      - id
+      - rating_owner
+      - rating_renter
+      - stars_owner
+      - stars_renter
+    ShippingMethodEnum:
+      enum:
+      - Correio
+      - Retirada
+      type: string
+    StateEnum:
+      enum:
+      - Acre
+      - Alagoas
+      - Amazonas
+      - Amapá
+      - Bahia
+      - Ceará
+      - Distrito Federal
+      - Espírito Santo
+      - Goiás
+      - Maranhão
+      - Minas Gerais
+      - Mato Grosso do Sul
+      - Mato Grosso
+      - Pará
+      - Paraíba
+      - Pernambuco
+      - Piauí
+      - Paraná
+      - Rio de Janeiro
+      - Rio Grande do Norte
+      - Rondônia
+      - Roraima
+      - Rio Grande do Sul
+      - Santa Catarina
+      - Sergipe
+      - São Paulo
+      - Tocantins
+      - Not Defined
+      type: string
+    TransactionEnum:
+      enum:
+      - Sale
+      - Location
+      type: string
+    UserDelete:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        password:
+          type: string
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly
+            assigning them.
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        is_staff:
+          type: boolean
+          readOnly: true
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        avatar:
+          type: string
+          readOnly: true
+          nullable: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        birth:
+          type: string
+          format: date
+          readOnly: true
+        stars:
+          type: integer
+          readOnly: true
+        groups:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+          description: The groups this user belongs to. A user will get all permissions
+            granted to each of their groups.
+        user_permissions:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+          description: Specific permissions for this user.
+      required:
+      - avatar
+      - birth
+      - date_joined
+      - email
+      - first_name
+      - groups
+      - id
+      - is_active
+      - is_staff
+      - is_superuser
+      - last_login
+      - last_name
+      - password
+      - stars
+      - user_permissions
+      - username
+    UserPatch:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        is_staff:
+          type: boolean
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        date_joined:
+          type: string
+          format: date-time
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        birth:
+          type: string
+          format: date
+        stars:
+          type: integer
+          readOnly: true
+      required:
+      - birth
+      - email
+      - stars
+      - username
+    UserPost:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        nota:
+          type: string
+          readOnly: true
+        address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          readOnly: true
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+        avatar:
+          type: string
+          nullable: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        birth:
+          type: string
+          format: date
+        stars:
+          type: integer
+          readOnly: true
+      required:
+      - address
+      - birth
+      - email
+      - id
+      - nota
+      - password
+      - stars
+      - username
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
