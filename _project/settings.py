@@ -194,4 +194,4 @@ django_on_heroku.settings(locals())
 # paypal
 
 PAYPAL_TEST = True
-PAYPAL_RECEIVER_EMAIL = "LucasOCara@gmail.com"
+PAYPAL_RECEIVER_EMAIL = ""
